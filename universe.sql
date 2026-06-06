@@ -49,7 +49,7 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.galaxy (
     galaxy_id integer NOT NULL,
-    name character varying(100),
+    name character varying(100) NOT NULL,
     age_in_millions_of_years numeric,
     description text,
     distance integer
@@ -78,7 +78,7 @@ ALTER TABLE public.galaxy ALTER COLUMN galaxy_id ADD GENERATED ALWAYS AS IDENTIT
 
 CREATE TABLE public.moon (
     moon_id integer NOT NULL,
-    name character varying(100),
+    name character varying(100) NOT NULL,
     has_life boolean,
     distance_from_earth integer,
     planet_id integer
@@ -107,7 +107,7 @@ ALTER TABLE public.moon ALTER COLUMN moon_id ADD GENERATED ALWAYS AS IDENTITY (
 
 CREATE TABLE public.planet (
     planet_id integer NOT NULL,
-    name character varying(100),
+    name character varying(100) NOT NULL,
     age_in_millions_of_years numeric,
     star_id integer,
     description character varying(100)
@@ -135,8 +135,8 @@ ALTER TABLE public.planet ALTER COLUMN planet_id ADD GENERATED ALWAYS AS IDENTIT
 --
 
 CREATE TABLE public.regent (
-    id integer NOT NULL,
-    name character varying(100),
+    regent_id integer NOT NULL,
+    name character varying(100) NOT NULL,
     description character varying(100),
     distance integer
 );
@@ -163,7 +163,7 @@ ALTER TABLE public.regent_id_seq OWNER TO freecodecamp;
 -- Name: regent_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
 --
 
-ALTER SEQUENCE public.regent_id_seq OWNED BY public.regent.id;
+ALTER SEQUENCE public.regent_id_seq OWNED BY public.regent.regent_id;
 
 
 --
@@ -172,7 +172,7 @@ ALTER SEQUENCE public.regent_id_seq OWNED BY public.regent.id;
 
 CREATE TABLE public.star (
     star_id integer NOT NULL,
-    name character varying(100),
+    name character varying(100) NOT NULL,
     has_life boolean,
     distance_from_earth integer,
     galaxy_id integer
@@ -196,10 +196,10 @@ ALTER TABLE public.star ALTER COLUMN star_id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- Name: regent id; Type: DEFAULT; Schema: public; Owner: freecodecamp
+-- Name: regent regent_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.regent ALTER COLUMN id SET DEFAULT nextval('public.regent_id_seq'::regclass);
+ALTER TABLE ONLY public.regent ALTER COLUMN regent_id SET DEFAULT nextval('public.regent_id_seq'::regclass);
 
 
 --
@@ -322,11 +322,27 @@ SELECT pg_catalog.setval('public.star_id_seq', 8, true);
 
 
 --
+-- Name: galaxy galaxy_galaxy_id_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.galaxy
+    ADD CONSTRAINT galaxy_galaxy_id_key UNIQUE (galaxy_id);
+
+
+--
 -- Name: galaxy galaxy_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
 ALTER TABLE ONLY public.galaxy
     ADD CONSTRAINT galaxy_pkey PRIMARY KEY (galaxy_id);
+
+
+--
+-- Name: moon moon_moon_id_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.moon
+    ADD CONSTRAINT moon_moon_id_key UNIQUE (moon_id);
 
 
 --
@@ -346,11 +362,27 @@ ALTER TABLE ONLY public.planet
 
 
 --
+-- Name: planet planet_planet_id_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.planet
+    ADD CONSTRAINT planet_planet_id_key UNIQUE (planet_id);
+
+
+--
 -- Name: regent regent_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
 ALTER TABLE ONLY public.regent
-    ADD CONSTRAINT regent_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT regent_pkey PRIMARY KEY (regent_id);
+
+
+--
+-- Name: regent regent_regent_id_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.regent
+    ADD CONSTRAINT regent_regent_id_key UNIQUE (regent_id);
 
 
 --
@@ -359,6 +391,14 @@ ALTER TABLE ONLY public.regent
 
 ALTER TABLE ONLY public.star
     ADD CONSTRAINT star_pkey PRIMARY KEY (star_id);
+
+
+--
+-- Name: star star_star_id_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.star
+    ADD CONSTRAINT star_star_id_key UNIQUE (star_id);
 
 
 --
