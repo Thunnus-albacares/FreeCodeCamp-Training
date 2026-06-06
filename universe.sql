@@ -48,10 +48,11 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.galaxy (
-    id integer NOT NULL,
+    galaxy_id integer NOT NULL,
     name character varying(100),
     age_in_millions_of_years numeric,
-    description text
+    description text,
+    distance integer
 );
 
 
@@ -61,7 +62,7 @@ ALTER TABLE public.galaxy OWNER TO freecodecamp;
 -- Name: galaxy_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE public.galaxy ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+ALTER TABLE public.galaxy ALTER COLUMN galaxy_id ADD GENERATED ALWAYS AS IDENTITY (
     SEQUENCE NAME public.galaxy_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -76,7 +77,7 @@ ALTER TABLE public.galaxy ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 --
 
 CREATE TABLE public.moon (
-    id integer NOT NULL,
+    moon_id integer NOT NULL,
     name character varying(100),
     has_life boolean,
     distance_from_earth integer,
@@ -90,7 +91,7 @@ ALTER TABLE public.moon OWNER TO freecodecamp;
 -- Name: moon_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE public.moon ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+ALTER TABLE public.moon ALTER COLUMN moon_id ADD GENERATED ALWAYS AS IDENTITY (
     SEQUENCE NAME public.moon_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -105,10 +106,11 @@ ALTER TABLE public.moon ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 --
 
 CREATE TABLE public.planet (
-    id integer NOT NULL,
+    planet_id integer NOT NULL,
     name character varying(100),
     age_in_millions_of_years numeric,
-    star_id integer
+    star_id integer,
+    description character varying(100)
 );
 
 
@@ -118,7 +120,7 @@ ALTER TABLE public.planet OWNER TO freecodecamp;
 -- Name: planet_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE public.planet ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+ALTER TABLE public.planet ALTER COLUMN planet_id ADD GENERATED ALWAYS AS IDENTITY (
     SEQUENCE NAME public.planet_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -134,7 +136,9 @@ ALTER TABLE public.planet ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 CREATE TABLE public.regent (
     id integer NOT NULL,
-    name character varying(100)
+    name character varying(100),
+    description character varying(100),
+    distance integer
 );
 
 
@@ -167,7 +171,7 @@ ALTER SEQUENCE public.regent_id_seq OWNED BY public.regent.id;
 --
 
 CREATE TABLE public.star (
-    id integer NOT NULL,
+    star_id integer NOT NULL,
     name character varying(100),
     has_life boolean,
     distance_from_earth integer,
@@ -181,7 +185,7 @@ ALTER TABLE public.star OWNER TO freecodecamp;
 -- Name: star_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE public.star ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+ALTER TABLE public.star ALTER COLUMN star_id ADD GENERATED ALWAYS AS IDENTITY (
     SEQUENCE NAME public.star_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -202,12 +206,12 @@ ALTER TABLE ONLY public.regent ALTER COLUMN id SET DEFAULT nextval('public.regen
 -- Data for Name: galaxy; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (1, 'a', 12, 'abc');
-INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (3, 'b', 13, 'def');
-INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (4, 'c', 14, 'fgh');
-INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (5, 'e', 23, 'po');
-INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (6, 'f', 54, 'oi');
-INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (7, 'g', 67, 'ap');
+INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (1, 'a', 12, 'abc', NULL);
+INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (3, 'b', 13, 'def', NULL);
+INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (4, 'c', 14, 'fgh', NULL);
+INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (5, 'e', 23, 'po', NULL);
+INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (6, 'f', 54, 'oi', NULL);
+INSERT INTO public.galaxy OVERRIDING SYSTEM VALUE VALUES (7, 'g', 67, 'ap', NULL);
 
 
 --
@@ -247,27 +251,27 @@ INSERT INTO public.moon OVERRIDING SYSTEM VALUE VALUES (30, 'aop', true, 548, 1)
 -- Data for Name: planet; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (1, 'ax', 122, 1);
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (2, 'am', 50, 4);
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (3, 'ad', 94, 5);
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (4, 'sm', 503, 4);
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (5, 'dad', 194, 1);
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (6, 'pi', 312, 4);
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (7, 'gm', 1503, 5);
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (8, 'daad', 794, 4);
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (9, 'xpi', 1312, 1);
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (10, 'ggm', 1673, 1);
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (11, 'ghnc', 1794, 4);
-INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (12, 'pdf', 512, 5);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (1, 'ax', 122, 1, NULL);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (2, 'am', 50, 4, NULL);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (3, 'ad', 94, 5, NULL);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (4, 'sm', 503, 4, NULL);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (5, 'dad', 194, 1, NULL);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (6, 'pi', 312, 4, NULL);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (7, 'gm', 1503, 5, NULL);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (8, 'daad', 794, 4, NULL);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (9, 'xpi', 1312, 1, NULL);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (10, 'ggm', 1673, 1, NULL);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (11, 'ghnc', 1794, 4, NULL);
+INSERT INTO public.planet OVERRIDING SYSTEM VALUE VALUES (12, 'pdf', 512, 5, NULL);
 
 
 --
 -- Data for Name: regent; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.regent VALUES (1, 'a');
-INSERT INTO public.regent VALUES (2, 'b');
-INSERT INTO public.regent VALUES (3, 'x');
+INSERT INTO public.regent VALUES (1, 'a', NULL, NULL);
+INSERT INTO public.regent VALUES (2, 'b', NULL, NULL);
+INSERT INTO public.regent VALUES (3, 'x', NULL, NULL);
 
 
 --
@@ -322,7 +326,7 @@ SELECT pg_catalog.setval('public.star_id_seq', 8, true);
 --
 
 ALTER TABLE ONLY public.galaxy
-    ADD CONSTRAINT galaxy_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT galaxy_pkey PRIMARY KEY (galaxy_id);
 
 
 --
@@ -330,7 +334,7 @@ ALTER TABLE ONLY public.galaxy
 --
 
 ALTER TABLE ONLY public.moon
-    ADD CONSTRAINT moon_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT moon_pkey PRIMARY KEY (moon_id);
 
 
 --
@@ -338,7 +342,7 @@ ALTER TABLE ONLY public.moon
 --
 
 ALTER TABLE ONLY public.planet
-    ADD CONSTRAINT planet_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT planet_pkey PRIMARY KEY (planet_id);
 
 
 --
@@ -354,7 +358,7 @@ ALTER TABLE ONLY public.regent
 --
 
 ALTER TABLE ONLY public.star
-    ADD CONSTRAINT star_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT star_pkey PRIMARY KEY (star_id);
 
 
 --
@@ -362,7 +366,7 @@ ALTER TABLE ONLY public.star
 --
 
 ALTER TABLE ONLY public.moon
-    ADD CONSTRAINT moon_planet_id_fkey FOREIGN KEY (planet_id) REFERENCES public.planet(id);
+    ADD CONSTRAINT moon_planet_id_fkey FOREIGN KEY (planet_id) REFERENCES public.planet(planet_id);
 
 
 --
@@ -370,7 +374,7 @@ ALTER TABLE ONLY public.moon
 --
 
 ALTER TABLE ONLY public.planet
-    ADD CONSTRAINT planet_star_id_fkey FOREIGN KEY (star_id) REFERENCES public.star(id);
+    ADD CONSTRAINT planet_star_id_fkey FOREIGN KEY (star_id) REFERENCES public.star(star_id);
 
 
 --
@@ -378,7 +382,7 @@ ALTER TABLE ONLY public.planet
 --
 
 ALTER TABLE ONLY public.star
-    ADD CONSTRAINT star_galaxy_id_fkey FOREIGN KEY (galaxy_id) REFERENCES public.galaxy(id);
+    ADD CONSTRAINT star_galaxy_id_fkey FOREIGN KEY (galaxy_id) REFERENCES public.galaxy(galaxy_id);
 
 
 --
